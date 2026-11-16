@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karate Club Okinawa — Programme Officiel des Grades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Serif+JP:wght@600;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        jp: ['Noto Serif JP', 'serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .belt-shadow {
+            box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.14), 0 2px 4px -1px rgba(15, 23, 42, 0.08);
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-grade-in {
+            animation: fadeSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-red-600 selection:text-white">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shrink-0">
+                        <svg viewBox="0 0 100 100" class="w-8 h-8 text-red-500 fill-current">
+                            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="4" opacity="0.35"/>
+                            <path d="M50 16 C64 16, 72 28, 66 40 C60 50, 48 45, 48 35 C48 27, 54 22, 50 16 Z" />
+                            <path d="M79 67 C72 79, 58 80, 50 69 C44 59, 54 51, 63 56 C70 60, 71 68, 79 67 Z" />
+                            <path d="M21 67 C14 55, 20 42, 34 41 C46 40, 48 53, 39 58 C32 62, 25 60, 21 67 Z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 leading-none">KARATE CLUB OKINAWA</h1>
+                            <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-md text-xs font-jp font-bold bg-red-50 text-red-700 border border-red-200">守武館 Shubukan</span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Programme Officiel des Passages de Grade</p>
+                    </div>
+                </div>
+
+                <nav class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
+                    <button type="button" onclick="switchMainView('grade')" id="nav-grade" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm">
+                        <i data-lucide="award" class="w-4 h-4 text-red-600"></i>
+                        <span class="hidden sm:inline">Objectifs de ceinture</span>
+                        <span class="sm:hidden">Objectifs</span>
+                    </button>
+                    <button type="button" onclick="switchMainView('tree')" id="nav-tree" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                        <i data-lucide="git-fork" class="w-4 h-4"></i>
+                        <span>Katas</span>
+                    </button>
+                    <button type="button" onclick="switchMainView('dojo')" id="nav-dojo" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Règles d'examen</span>
+                        <span class="sm:hidden">Règles</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- INTERACTIVE BELT SELECTOR STRIP -->
+        <div id="belt-strip-container" class="bg-slate-900 text-white border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5">
+                <div class="flex items-center justify-between mb-1.5 px-1">
+                    <span class="text-[11px] uppercase tracking-wider font-bold text-slate-400 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        Choisis la ceinture à réviser (<span id="belt-counter-label">1 / 20</span>)
+                    </span>
+                    <div class="flex items-center gap-1">
+                        <button type="button" onclick="stepGrade(-1)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Grade précédent">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                        </button>
+                        <button type="button" onclick="stepGrade(1)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Grade suivant">
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="belt-selector" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- VIEW 1: GRADE DETAIL & REVISION DASHBOARD -->
+        <section id="view-grade" class="space-y-6">
+            <div id="grade-hero" class="rounded-3xl p-6 sm:p-8 shadow-lg border transition-all duration-300 relative overflow-hidden"></div>
+
+            <!-- Interactive Checklist Legend & Progress Bar -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <h3 class="font-bold text-slate-900 flex items-center gap-2 text-base sm:text-lg">
+                        <i data-lucide="check-square" class="w-5 h-5 text-red-600"></i>
+                        Suivi d'entraînement de l'élève
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Clique sur le bouton de statut de chaque technique pour suivre ta progression : À apprendre &rarr; À entraîner &rarr; À répéter &rarr; Acquis.</p>
+                </div>
+
+                <div class="w-full md:w-72 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                    <div class="flex justify-between items-center text-xs font-bold mb-1.5">
+                        <span class="text-slate-600">Objectifs acquis</span>
+                        <span id="progress-text" class="text-slate-900">0 / 0 (0%)</span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-COLUMN LAYOUT: OBJECTIVES & OFFICIAL PDF KATA SHEETS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div id="objectives-container" class="lg:col-span-7 space-y-3"></div>
+                <div class="lg:col-span-5 space-y-5 lg:sticky lg:top-40">
+                    <div id="visual-studio-card" class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 2: PROGRESSION TREE (ONLY THE 3 KATA BRANCHES BOX) -->
+        <section id="view-tree" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                <div class="mb-6">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 mb-3">
+                        <i data-lucide="git-branch" class="w-3.5 h-3.5"></i> Swiss Shubukan Dojo
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Les 3 Branches des Katas</h2>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+                    <!-- Branch 1: Naihanchi -->
+                    <div class="rounded-2xl bg-amber-50/70 border border-amber-200/90 p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-extrabold text-amber-950 text-base">Branche Naihanchi</span>
+                                <span class="font-jp text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg">ナイハンチ</span>
+                            </div>
+                            <div class="space-y-2 text-xs font-semibold">
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi shodan (1 à 7)</span>
+                                    <span class="text-slate-600 font-bold">Blanc 1b</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi shodan (1 à 12)</span>
+                                    <span class="text-yellow-700 font-bold">Blanc / Jaune</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi shodan (1 à 20)</span>
+                                    <span class="text-amber-700 font-bold">Jaune / 1b / J-O</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi shodan (Complet)</span>
+                                    <span class="text-emerald-700 font-bold">O-V • Verte • Noire</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-100/90 px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-600">
+                                    <span>Naihanchi nidan (Complet)</span>
+                                    <span class="text-[11px] font-bold text-slate-500">Hors programme / pas demandé</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi sandan (1 à 12)</span>
+                                    <span class="text-amber-900 font-bold">Marron 1</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
+                                    <span>Naihanchi sandan (Complet)</span>
+                                    <span class="text-amber-950 font-bold">Marron 2 • Adulte</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 2: Pinan -->
+                    <div class="rounded-2xl bg-sky-50/70 border border-sky-200/90 p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-extrabold text-sky-950 text-base">Série des 5 Pinan</span>
+                                <span class="font-jp text-xs font-bold text-sky-800 bg-sky-100 px-2.5 py-1 rounded-lg">平安</span>
+                            </div>
+                            <div class="space-y-2 text-xs font-semibold">
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
+                                    <span>1. Pinan nidan</span>
+                                    <span class="text-orange-600 font-bold">Jaune/Orange &rarr; Orange</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
+                                    <span>2. Pinan shodan</span>
+                                    <span class="text-emerald-600 font-bold">Orange 1b &rarr; Verte 1 / Noire</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
+                                    <span>3. Pinan sandan</span>
+                                    <span class="text-teal-700 font-bold">Verte 1 &rarr; Verte/Bleue 1</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
+                                    <span>4. Pinan yondan</span>
+                                    <span class="text-blue-600 font-bold">V/B 1 &rarr; Bleue 1</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
+                                    <span>5. Pinan godan</span>
+                                    <span class="text-indigo-700 font-bold">Bleue 2 &rarr; Marron 2 / Adulte</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Branch 3: Ordre Katas Supérieurs Swiss Shubukan Dojo -->
+                    <div class="rounded-2xl bg-slate-900 text-white p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-extrabold text-white text-base">Ordre Katas Supérieurs</span>
+                                <span class="font-jp text-xs font-bold text-red-400 bg-red-950/80 border border-red-800 px-2.5 py-1 rounded-lg">守武館</span>
+                            </div>
+                            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-3">Swiss Shubukan Dojo</p>
+                            <ol class="space-y-1.5 text-xs font-semibold">
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">1.</span> Ananku</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">2.</span> Rohai</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800 px-3 py-1.5 rounded-xl border border-amber-500/40">
+                                    <span class="text-amber-300 font-bold"><span class="text-red-400 font-black mr-2">3.</span> Kusanku Sho</span>
+                                    <span class="text-[10px] text-amber-200/80">M2 • Adulte • Noire</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">4.</span> Jion</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">5.</span> Wankan</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">6.</span> Itosu no passai</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">7.</span> Shuri Sanchin</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">8.</span> Wanshu</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">9.</span> Chinti</span>
+                                </li>
+                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span><span class="text-red-400 font-black mr-2">10.</span> Anan</span>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: DOJO RULES & EXAM GUIDE -->
+        <section id="view-dojo" class="hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-red-600">Charte & Règlement du Club</span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Comprendre les Passages de Grade</h2>
+                    </div>
+                    <div class="px-4 py-2.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-bold flex items-center gap-2">
+                        <i data-lucide="id-card" class="w-5 h-5 text-amber-600 shrink-0"></i>
+                        <span>Merci de prendre votre licence pour l'examen !</span>
+                    </div>
+                </div>
+
+                <div class="my-6 p-6 rounded-2xl bg-slate-900 text-white relative overflow-hidden">
+                    <div class="relative z-10 max-w-2xl">
+                        <p class="font-jp text-red-400 text-sm font-bold mb-2">守武館 — L'École de la Vie</p>
+                        <blockquote class="text-lg sm:text-xl font-bold leading-relaxed">
+                            « Le Grade Kyu (niveau inférieur) ou le Dan (niveau supérieur) n'est pas une récompense, c'est la constatation d'un niveau dans la pratique. »
+                        </blockquote>
+                    </div>
+                    <span class="font-jp text-8xl font-black text-white/5 absolute -right-4 -bottom-6 select-none">空手道</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
+                            <div class="w-6 h-2 bg-slate-800 rounded-sm"></div>
+                        </div>
+                        <h3 class="font-extrabold text-slate-900 text-base">Barrette</h3>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Niveau intermédiaire</strong> ajouté sur la ceinture actuelle pour valider une première étape de progression.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
+                            <div class="w-6 h-2 rounded-sm overflow-hidden flex">
+                                <span class="w-1/2 bg-yellow-400"></span>
+                                <span class="w-1/2 bg-orange-500"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-extrabold text-slate-900 text-base">Ceinture bicolore</h3>
+                            <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-800">5.– Frs</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Grade intermédiaire</strong> • Appartenance personnelle.</p>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
+                            <div class="w-6 h-2 bg-emerald-600 rounded-sm"></div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-extrabold text-slate-900 text-base">Ceinture de couleur</h3>
+                            <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-slate-200 text-slate-800">10.– Frs</span>
+                        </div>
+                        <p class="text-sm text-slate-600 mt-1"><strong>Grade déterminé</strong> • Appartenance personnelle.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-8 border-t border-slate-200 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div class="flex items-center gap-2">
+            <span class="font-bold text-slate-700">Karate Club Okinawa — Swiss Shubukan Dojo (守武館)</span>
+            <span>•</span>
+            <span>Support de révision élèves & parents</span>
+        </div>
+        <div>
+            <span>Merci de prendre votre licence pour l'examen !</span>
+        </div>
+    </footer>
+
+    <script>
+        // =========================================================================
+        // 1. ALL 20 BELT GRADES (EXACT DATA FROM OFFICIAL CLUB PDF SHEETS)
+        // =========================================================================
+        const GRADES_DATA = [
+            {
+                id: 'b1',
+                shortName: 'Blanc 1b',
+                title: 'Ceinture Blanc — 1 barrette',
+                kyu: '6ème Kyu — Barrette',
+                category: 'Juniors',
+                minAge: '5 ans',
+                pdfFileName: '1B 1 barrette.pdf',
+                beltStyle: { type: 'solid', c1: '#FFFFFF', stripe: '#EAB308', badgeBg: 'bg-slate-100 text-slate-800 border-slate-300', accent: '#64748B' },
+                katas: ['naihanchi_shodan_7'],
+                objectives: [
+                    { id: 'b1-1', type: 'Posture', jp: 'Shiko dachi', fr: 'Position du cavalier.' },
+                    { id: 'b1-2', type: 'Posture', jp: 'Zen kutsu dachi', fr: 'Position fendue avant.' },
+                    { id: 'b1-3', type: 'Blocage', jp: 'Gedan uke', fr: 'Blocage bas.' },
+                    { id: 'b1-4', type: 'Attaque', jp: 'Chudan tsuki', fr: 'Coup de poing au niveau moyen.' },
+                    { id: 'b1-5', type: 'Kata', jp: 'Naihanchi shodan (7 premiers mouvements)', fr: 'Les 7 premiers mouvements du kata Naihanchi shodan.' },
+                    { id: 'b1-6', type: 'Attitude', jp: 'Seiza', fr: 'Position assise traditionnelle à genoux.' }
+                ]
+            },
+            {
+                id: 'bj',
+                shortName: 'Blanc / Jaune',
+                title: 'Ceinture Blanc / Jaune',
+                kyu: '6ème Kyu — Intermédiaire',
+                category: 'Juniors',
+                minAge: '5 ans',
+                pdfFileName: '1BJ.pdf',
+                beltStyle: { type: 'split', c1: '#FFFFFF', c2: '#FACC15', badgeBg: 'bg-yellow-50 text-yellow-900 border-yellow-300', accent: '#EAB308' },
+                katas: ['naihanchi_shodan_12'],
+                objectives: [
+                    { id: 'bj-1', type: 'Posture', jp: 'Shiko dachi', fr: 'Position du cavalier.' },
+                    { id: 'bj-2', type: 'Posture', jp: 'Zen kutsu dachi', fr: 'Position fendue avant.' },
+                    { id: 'bj-3', type: 'Blocage', jp: 'Gedan uke', fr: 'Blocage bas.' },
+                    { id: 'bj-4', type: 'Attaque', jp: 'Chudan tsuki', fr: 'Coup de poing au niveau moyen.' },
+                    { id: 'bj-5', type: 'Kata', jp: 'Naihanchi shodan (12 premiers mouvements)', fr: 'Les 12 premiers mouvements du kata Naihanchi shodan.' },
+                    { id: 'bj-6', type: 'Attitude', jp: 'Seiza', fr: 'Position assise traditionnelle à genoux.' }
+                ]
+            },
+            {
+                id: 'j',
+                shortName: 'Jaune',
+                title: 'Ceinture Jaune',
+                kyu: '5ème Kyu',
+                category: 'Juniors',
+                minAge: '5,5 ans',
+                pdfFileName: '2J.pdf',
+                beltStyle: { type: 'solid', c1: '#FACC15', badgeBg: 'bg-yellow-100 text-yellow-900 border-yellow-400', accent: '#CA8A04' },
+                katas: ['naihanchi_shodan_20'],
+                objectives: [
+                    { id: 'j-1', type: 'Posture', jp: 'Naihanchi dachi', fr: 'Position du kata Naihanchi.' },
+                    { id: 'j-2', type: 'Posture', jp: 'Zen kutsu dachi', fr: 'Position fendue avant.' },
+                    { id: 'j-3', type: 'Blocage', jp: 'Jodan uke', fr: 'Blocage haut.' },
+                    { id: 'j-4', type: 'Attaque', jp: 'Chudan tsuki', fr: 'Coup de poing au niveau moyen.' },
+                    { id: 'j-5', type: 'Pied', jp: 'Mae geri', fr: 'Coup de pied direct vers l’avant.' },
+                    { id: 'j-6', type: 'Kata', jp: 'Naihanchi shodan (20 premiers mouvements)', fr: 'Les 20 premiers mouvements du kata Naihanchi shodan.' },
+                    { id: 'j-7', type: 'Autonomie', jp: 'Attacher son Karaté-gi seul', fr: 'Savoir nouer sa ceinture et ajuster sa tenue seul.' }
+                ]
+            },
+            {
+                id: 'j1',
+                shortName: 'Jaune 1b',
+                title: 'Ceinture Jaune — 1 barrette',
+                kyu: '5ème Kyu — Barrette',
+                category: 'Juniors',
+                minAge: '6,5 ans',
+                pdfFileName: '3 jaune 1 barrette.pdf',
+                beltStyle: { type: 'solid', c1: '#FACC15', stripe: '#F97316', badgeBg: 'bg-yellow-100 text-yellow-900 border-yellow-400', accent: '#D97706' },
+                katas: ['naihanchi_shodan_20'],
+                objectives: [
+                    { id: 'j1-1', type: 'Posture', jp: 'Neko ashi dachi', fr: 'Position du chat.' },
+                    { id: 'j1-2', type: 'Posture', jp: 'Naihanchi dachi', fr: 'Position du kata Naihanchi.' },
+                    { id: 'j1-3', type: 'Blocages', jp: 'Soto uke & Uchi uke', fr: 'Blocages au niveau moyen.' },
+                    { id: 'j1-4', type: 'Attaque', jp: 'Oie tsuki chudan', fr: 'Coup de poing en avançant au niveau moyen.' },
+                    { id: 'j1-5', type: 'Pied', jp: 'Mae geri', fr: 'Coup de pied avant.' },
+                    { id: 'j1-6', type: 'Kihon', jp: 'Sambon chudan tsuki', fr: 'Enchaînement de 3 coups de poing au milieu.' },
+                    { id: 'j1-7', type: 'Kata', jp: 'Naihanchi shodan (20 premiers mouvements)', fr: 'Les 20 premiers mouvements du kata Naihanchi shodan.' }
+                ]
+            },
+            {
+                id: 'jo',
+                shortName: 'Jaune / Orange',
+                title: 'Ceinture Jaune / Orange',
+                kyu: '5ème Kyu — Intermédiaire',
+                category: 'Juniors',
+                minAge: '7 ans',
+                pdfFileName: '3j o.pdf',
+                beltStyle: { type: 'split', c1: '#FACC15', c2: '#F97316', badgeBg: 'bg-orange-50 text-orange-900 border-orange-300', accent: '#EA580C' },
+                katas: ['naihanchi_shodan_20', 'pinan_nidan_9'],
+                objectives: [
+                    { id: 'jo-1', type: 'Posture', jp: 'Neko ashi dachi', fr: 'Position du chat.' },
+                    { id: 'jo-2', type: 'Posture', jp: 'Naihanchi dachi', fr: 'Position du kata Naihanchi.' },
+                    { id: 'jo-3', type: 'Blocages', jp: 'Soto uke & Uchi uke', fr: 'Blocages au niveau moyen.' },
+                    { id: 'jo-4', type: 'Attaque', jp: 'Oie tsuki chudan', fr: 'Coup de poing en avançant au niveau moyen.' },
+                    { id: 'jo-5', type: 'Pied', jp: 'Mae geri', fr: 'Coup de pied avant.' },
+                    { id: 'jo-6', type: 'Kihon', jp: 'Sambon chudan tsuki', fr: 'Enchaînement de 3 coups de poing au milieu.' },
+                    { id: 'jo-7', type: 'Kata', jp: 'Naihanchi shodan (20 premiers mouvements)', fr: 'Les 20 premiers mouvements du kata Naihanchi shodan.' },
+                    { id: 'jo-8', type: 'Kata', jp: 'Pinan nidan (9 premiers mouvements)', fr: 'Les 9 premiers mouvements du kata Pinan nidan.' }
+                ]
+            },
+            {
+                id: 'o',
+                shortName: 'Orange',
+                title: 'Ceinture Orange',
+                kyu: '4ème Kyu',
+                category: 'Juniors',
+                minAge: '7 ans',
+                pdfFileName: '4o.pdf',
+                beltStyle: { type: 'solid', c1: '#F97316', badgeBg: 'bg-orange-100 text-orange-900 border-orange-400', accent: '#EA580C' },
+                katas: ['pinan_nidan_full'],
+                objectives: [
+                    { id: 'o-1', type: 'Posture', jp: 'Neko ashi dachi', fr: 'Position du chat.' },
+                    { id: 'o-2', type: 'Blocage', jp: 'Gedan shuto uke en neko ashi', fr: 'Blocage bas avec le tranchant de la main en position du chat.' },
+                    { id: 'o-3', type: 'Attaque', jp: 'Chudan gyaku tsuki', fr: 'Coup de poing opposé à la jambe avant au niveau moyen.' },
+                    { id: 'o-4', type: 'Kihon', jp: 'Kihon ichi (en zen kutsu dachi)', fr: '1er Kihon en position fendue avant.' },
+                    { id: 'o-5', type: 'Kata', jp: 'Pinan nidan (Complet)', fr: 'Kata Pinan nidan complet.' },
+                    { id: 'o-6', type: 'Pied', jp: 'Mawashi geri', fr: 'Coup de pied circulaire.' }
+                ]
+            },
+            {
+                id: 'o1',
+                shortName: 'Orange 1b',
+                title: 'Ceinture Orange — 1 barrette',
+                kyu: '4ème Kyu — Barrette',
+                category: 'Juniors',
+                minAge: '7,5 ans',
+                pdfFileName: '5 orange 1 barrette.pdf',
+                beltStyle: { type: 'solid', c1: '#F97316', stripe: '#16A34A', badgeBg: 'bg-orange-100 text-orange-900 border-orange-400', accent: '#EA580C' },
+                katas: ['pinan_shodan_12'],
+                objectives: [
+                    { id: 'o1-1', type: 'Posture', jp: 'Shizen dachi', fr: 'Position naturelle.' },
+                    { id: 'o1-2', type: 'Blocage', jp: 'Chudan shuto uke en neko ashi', fr: 'Blocage moyen avec le tranchant de la main en position du chat.' },
+                    { id: 'o1-3', type: 'Attaques', jp: 'Tsuki (jodan, chudan, gedan)', fr: 'Coups de poing haut, milieu et bas.' },
+                    { id: 'o1-4', type: 'Pied', jp: 'Mawashi geri', fr: 'Coup de pied circulaire.' },
+                    { id: 'o1-5', type: 'Kata', jp: 'Pinan shodan (12 premiers mouvements)', fr: 'Les 12 premiers mouvements du kata Pinan shodan.' },
+                    { id: 'o1-6', type: 'Bunkaï', jp: 'Bunkaï avec chudan shuto uke', fr: 'Application avec partenaire utilisant chudan shuto uke.' }
+                ]
+            },
+            {
+                id: 'ov',
+                shortName: 'Orange / Verte',
+                title: 'Ceinture Orange / Verte',
+                kyu: '4ème Kyu — Intermédiaire',
+                category: 'Juniors',
+                minAge: '8 ans',
+                pdfFileName: '5o v.pdf',
+                beltStyle: { type: 'split', c1: '#F97316', c2: '#16A34A', badgeBg: 'bg-emerald-50 text-emerald-900 border-emerald-300', accent: '#16A34A' },
+                katas: ['naihanchi_shodan_full', 'pinan_shodan_12'],
+                objectives: [
+                    { id: 'ov-1', type: 'Posture', jp: 'Shizen dachi', fr: 'Position naturelle.' },
+                    { id: 'ov-2', type: 'Blocage', jp: 'Chudan shuto uke en neko ashi', fr: 'Blocage moyen tranchant de main en position du chat.' },
+                    { id: 'ov-3', type: 'Attaques', jp: 'Tsuki (jodan, chudan, gedan)', fr: 'Coups de poing haut, milieu et bas.' },
+                    { id: 'ov-4', type: 'Pied', jp: 'Mawashi geri', fr: 'Coup de pied circulaire.' },
+                    { id: 'ov-5', type: 'Kata', jp: 'Naihanchi shodan (Complet)', fr: 'Kata Naihanchi shodan complet.' },
+                    { id: 'ov-6', type: 'Kata', jp: 'Pinan shodan (12 premiers mouvements)', fr: 'Les 12 premiers mouvements du kata Pinan shodan.' },
+                    { id: 'ov-7', type: 'Bunkaï', jp: 'Bunkaï avec chudan shuto uke', fr: 'Application avec partenaire utilisant chudan shuto uke.' }
+                ]
+            },
+            {
+                id: 'v',
+                shortName: 'Verte',
+                title: 'Ceinture Verte',
+                kyu: '3ème Kyu',
+                category: 'Juniors',
+                minAge: '9 ans',
+                pdfFileName: '6v.pdf',
+                beltStyle: { type: 'solid', c1: '#16A34A', badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-400', accent: '#16A34A' },
+                katas: ['naihanchi_shodan_full', 'pinan_shodan_full'],
+                objectives: [
+                    { id: 'v-1', type: 'Kumité', jp: 'Ippon kumité (Jodan uke, Gedan uke)', fr: 'Attaque sur uke en avançant en zen kutsu dachi : blocages Jodan uke, Gedan uke et contre-attaque en gyaku tsuki.' },
+                    { id: 'v-2', type: 'Pied', jp: 'Mawashi geri', fr: 'Coup de pied circulaire.' },
+                    { id: 'v-3', type: 'Kata', jp: 'Naihanchi shodan (Complet)', fr: 'Kata Naihanchi shodan complet.' },
+                    { id: 'v-4', type: 'Kata', jp: 'Pinan shodan (Complet)', fr: 'Kata Pinan shodan complet.' }
+                ]
+            },
+            {
+                id: 'v1',
+                shortName: 'Verte 1',
+                title: 'Ceinture Verte 1',
+                kyu: '3ème Kyu — Barrette',
+                category: 'Juniors',
+                minAge: '9 ans',
+                pdfFileName: '7v1.pdf',
+                beltStyle: { type: 'solid', c1: '#16A34A', stripe: '#2563EB', badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-400', accent: '#15803D' },
+                katas: ['pinan_sandan_8', 'pinan_shodan_full'],
+                objectives: [
+                    { id: 'v1-1', type: 'Kumité', jp: 'Ippon kumité (Soto uke, Uchi uke)', fr: 'Attaque en avançant en zen kutsu dachi : blocage Soto uke, Uchi uke et contre-attaque en gyaku tsuki.' },
+                    { id: 'v1-2', type: 'Pied', jp: 'Mawashi geri', fr: 'Coup de pied circulaire.' },
+                    { id: 'v1-3', type: 'Kata', jp: 'Pinan sandan (8 premiers mouvements)', fr: 'Les 8 premiers mouvements du kata Pinan sandan.' },
+                    { id: 'v1-4', type: 'Kata', jp: 'Pinan shodan (Complet)', fr: 'Kata Pinan shodan complet.' },
+                    { id: 'v1-5', type: 'Bunkaï', jp: '2 Bunkaïs du kata Pinan shodan', fr: '2 applications du kata Pinan shodan.' }
+                ]
+            },
+            {
+                id: 'vb',
+                shortName: 'Verte / Bleue',
+                title: 'Ceinture Verte / Bleue',
+                kyu: '3ème Kyu — Intermédiaire',
+                category: 'Juniors',
+                minAge: '10 ans',
+                pdfFileName: '8v b.pdf',
+                beltStyle: { type: 'split', c1: '#16A34A', c2: '#2563EB', badgeBg: 'bg-teal-50 text-teal-900 border-teal-300', accent: '#0D9488' },
+                katas: ['pinan_sandan_full'],
+                objectives: [
+                    { id: 'vb-1', type: 'Pied', jp: 'Yoko geri', fr: 'Coup de pied avec le tranchant du pied, hauteur de la poitrine.' },
+                    { id: 'vb-2', type: 'Kihon', jp: 'Chudan tsuki en shiko dachi', fr: 'Coup de poing au milieu en position du cavalier.' },
+                    { id: 'vb-3', type: 'Kata', jp: 'Pinan sandan (Complet)', fr: 'Kata Pinan sandan complet.' },
+                    { id: 'vb-4', type: 'Bunkaï', jp: '2 Bunkaïs Pinan sandan', fr: '2 applications du kata Pinan sandan.' },
+                    { id: 'vb-5', type: 'Kumité', jp: 'Sambon kumité (Jodan uke, Soto uke, Gedan uke)', fr: 'Défense sur 3 attaques successives : blocage haut, milieu et bas.' }
+                ]
+            },
+            {
+                id: 'vb1',
+                shortName: 'Verte / Bleue 1',
+                title: 'Ceinture Verte / Bleue 1',
+                kyu: '3ème Kyu — Intermédiaire Barrette',
+                category: 'Juniors',
+                minAge: '10 ans',
+                pdfFileName: '9v b1.pdf',
+                beltStyle: { type: 'split', c1: '#16A34A', c2: '#2563EB', stripe: '#FFFFFF', badgeBg: 'bg-teal-50 text-teal-900 border-teal-300', accent: '#0284C7' },
+                katas: ['pinan_sandan_full', 'pinan_yondan_9'],
+                objectives: [
+                    { id: 'vb1-1', type: 'Pied', jp: 'Yoko geri', fr: 'Coup de pied avec le tranchant du pied, hauteur de la poitrine.' },
+                    { id: 'vb1-2', type: 'Kata', jp: 'Pinan sandan (Complet)', fr: 'Kata Pinan sandan complet.' },
+                    { id: 'vb1-3', type: 'Kata', jp: 'Pinan yondan (9 premiers mouvements)', fr: 'Les 9 premiers mouvements du kata Pinan yondan.' },
+                    { id: 'vb1-4', type: 'Bunkaï', jp: '2 Bunkaïs du kata Pinan sandan avec projection', fr: '2 applications du kata Pinan sandan avec projection.' },
+                    { id: 'vb1-5', type: 'Kihon', jp: 'Kihon ichi', fr: '1er Kihon.' }
+                ]
+            },
+            {
+                id: 'bl',
+                shortName: 'Bleue',
+                title: 'Ceinture Bleue',
+                kyu: '2ème Kyu',
+                category: 'Juniors',
+                minAge: '11 ans',
+                pdfFileName: '10 bl.pdf',
+                beltStyle: { type: 'solid', c1: '#2563EB', badgeBg: 'bg-blue-100 text-blue-900 border-blue-400', accent: '#2563EB' },
+                katas: ['pinan_yondan_full'],
+                objectives: [
+                    { id: 'bl-1', type: 'Pieds', jp: 'Mae geri, Mawashi geri, Yoko geri', fr: 'Les 3 coups de pied : avant, circulaire et latéral tranchant.' },
+                    { id: 'bl-2', type: 'Partenaire', jp: 'Techniques à démontrer avec partenaire', fr: 'Démonstration technique avec partenaire.' },
+                    { id: 'bl-3', type: 'Kata', jp: 'Pinan yondan (Complet)', fr: 'Kata Pinan yondan complet.' },
+                    { id: 'bl-4', type: 'Bunkaï', jp: '2 Bunkaïs du kata Pinan yondan', fr: '2 applications du kata Pinan yondan.' }
+                ]
+            },
+            {
+                id: 'bl1',
+                shortName: 'Bleue 1',
+                title: 'Ceinture Bleue 1',
+                kyu: '2ème Kyu — Barrette 1',
+                category: 'Juniors',
+                minAge: '11 ans',
+                pdfFileName: '11 bl1.pdf',
+                beltStyle: { type: 'solid', c1: '#2563EB', stripe: '#78350F', badgeBg: 'bg-blue-100 text-blue-900 border-blue-400', accent: '#1D4ED8' },
+                katas: ['pinan_yondan_full'],
+                objectives: [
+                    { id: 'bl1-1', type: 'Enchaînement', jp: 'Mae geri - jodan oie tsuki', fr: 'Coup de pied avant suivi d’un coup de poing avant au niveau haut.' },
+                    { id: 'bl1-2', type: 'Kata', jp: 'Pinan yondan (Complet)', fr: 'Kata Pinan yondan complet.' },
+                    { id: 'bl1-3', type: 'Bunkaï', jp: '2 Bunkaïs du Pinan yondan avec projection', fr: '2 applications du kata Pinan yondan avec projection.' },
+                    { id: 'bl1-4', type: 'Kihon', jp: 'Kihon ni', fr: '2ème Kihon.' }
+                ]
+            },
+            {
+                id: 'bl2',
+                shortName: 'Bleue 2',
+                title: 'Ceinture Bleue 2',
+                kyu: '2ème Kyu — Barrette 2',
+                category: 'Juniors',
+                minAge: '12 ans',
+                pdfFileName: '12 bl2.pdf',
+                beltStyle: { type: 'solid', c1: '#2563EB', stripe: '#78350F', stripe2: '#78350F', badgeBg: 'bg-blue-100 text-blue-900 border-blue-400', accent: '#1E40AF' },
+                katas: ['pinan_godan_11'],
+                objectives: [
+                    { id: 'bl2-1', type: 'Enchaînement', jp: 'Mawashi geri - chudan gyaku tsuki', fr: 'Coup de pied circulaire suivi d’un coup de poing opposé au niveau moyen.' },
+                    { id: 'bl2-2', type: 'Kata', jp: 'Pinan godan (jusqu’à 11)', fr: 'Kata Pinan godan jusqu’au 11ème mouvement.' },
+                    { id: 'bl2-3', type: 'Bunkaï', jp: '2 Bunkaïs du Pinan godan', fr: '2 applications du kata Pinan godan.' },
+                    { id: 'bl2-4', type: 'Kihon', jp: 'Kihon ichi et ni', fr: '1er et 2ème Kihon.' }
+                ]
+            },
+            {
+                id: 'bm',
+                shortName: 'Bleue / Marron',
+                title: 'Ceinture Bleue / Marron',
+                kyu: '2ème Kyu — Intermédiaire',
+                category: 'Juniors',
+                minAge: '13 ans',
+                pdfFileName: '13 b m.pdf',
+                beltStyle: { type: 'split', c1: '#2563EB', c2: '#78350F', badgeBg: 'bg-amber-100 text-amber-950 border-amber-400', accent: '#78350F' },
+                katas: ['pinan_godan_full'],
+                objectives: [
+                    { id: 'bm-1', type: 'Enchaînement', jp: 'Yoko geri - uraken uchi', fr: 'Coup de pied latéral suivi d’un revers du poing.' },
+                    { id: 'bm-2', type: 'Kata', jp: 'Pinan godan (Complet)', fr: 'Kata Pinan godan complet.' },
+                    { id: 'bm-3', type: 'Bunkaï', jp: '2 Bunkaïs du Pinan godan avec projection', fr: '2 applications du kata Pinan godan avec projection.' },
+                    { id: 'bm-4', type: 'Kihon', jp: 'Kihon san', fr: '3ème Kihon.' }
+                ]
+            },
+            {
+                id: 'm1',
+                shortName: 'Marron 1',
+                title: 'Ceinture Marron 1',
+                kyu: '1er Kyu — Niveau 1',
+                category: 'Juniors',
+                minAge: '14 ans',
+                pdfFileName: '14 m1.pdf',
+                beltStyle: { type: 'solid', c1: '#78350F', stripe: '#0F172A', badgeBg: 'bg-amber-900/10 text-amber-950 border-amber-700', accent: '#78350F' },
+                katas: ['naihanchi_sandan_12', 'pinan_godan_full'],
+                objectives: [
+                    { id: 'm1-1', type: 'Enchaînement', jp: 'Mae geri - jodan oie tsuki', fr: 'Coup de pied avant suivi d’un coup de poing avant haut.' },
+                    { id: 'm1-2', type: 'Enchaînement', jp: 'Mawashi geri - chudan gyaku tsuki', fr: 'Coup de pied circulaire suivi d’un coup de poing opposé moyen.' },
+                    { id: 'm1-3', type: 'Kata', jp: 'Naihanchi sandan (jusqu’à 12)', fr: 'Kata Naihanchi sandan jusqu’au 12ème mouvement.' },
+                    { id: 'm1-4', type: 'Bunkaï', jp: '2 Bunkaïs du Naihanchi sandan', fr: '2 applications du kata Naihanchi sandan.' },
+                    { id: 'm1-5', type: 'Kata', jp: 'Pinan godan (Complet)', fr: 'Kata Pinan godan complet.' }
+                ]
+            },
+            {
+                id: 'm2',
+                shortName: 'Marron 2',
+                title: 'Ceinture Marron 2',
+                kyu: '1er Kyu — Niveau 2',
+                category: 'Juniors',
+                minAge: '14 ans',
+                pdfFileName: null,
+                unavailableNote: 'Fiche fournie au format image uniquement (15 m 2.jpg / 15 m 2 dos.jpg) — pas de fichier PDF individuel.',
+                beltStyle: { type: 'solid', c1: '#78350F', stripe: '#0F172A', stripe2: '#0F172A', badgeBg: 'bg-amber-900/15 text-amber-950 border-amber-800', accent: '#451A03' },
+                katas: ['naihanchi_sandan_full', 'pinan_godan_full', 'kusanku_sho'],
+                objectives: [
+                    { id: 'm2-1', type: 'Enchaînement', jp: 'Yoko geri - jodan uraken uchi', fr: 'Coup de pied avec le tranchant du pied (hauteur poitrine) suivi d’un revers du poing haut.' },
+                    { id: 'm2-2', type: 'Kata', jp: 'Naihanchi sandan (Complet)', fr: 'Kata Naihanchi sandan complet.' },
+                    { id: 'm2-3', type: 'Bunkaï', jp: '2 Bunkaïs du Naihanchi sandan', fr: '2 applications du kata Naihanchi sandan.' },
+                    { id: 'm2-4', type: 'Kata', jp: 'Pinan godan (Complet)', fr: 'Kata Pinan godan complet.' },
+                    { id: 'm2-5', type: 'Bunkaï', jp: '2 Bunkaïs du Pinan godan', fr: '2 applications du kata Pinan godan.' },
+                    { id: 'm2-6', type: 'Kata Supérieur', jp: 'Kusanku sho', fr: 'Kata Kusanku sho.' },
+                    { id: 'm2-7', type: 'Engagement', jp: '3 stages de karaté', fr: 'Participation à 3 stages de karaté.' }
+                ]
+            },
+            {
+                id: 'ma',
+                shortName: 'Marron Adulte',
+                title: 'Ceinture Marron — Adultes',
+                kyu: '1er Kyu — Adultes',
+                category: 'Adultes',
+                minAge: 'Adultes',
+                pdfFileName: null,
+                unavailableNote: 'Fiche PDF individuelle non fournie (reprend le programme Marron 2 + Kusanku Sho + les 3 coups de pied).',
+                beltStyle: { type: 'solid', c1: '#5C2709', badgeBg: 'bg-amber-950 text-amber-100 border-amber-800', accent: '#5C2709' },
+                katas: ['naihanchi_sandan_full', 'pinan_godan_full', 'kusanku_sho'],
+                objectives: [
+                    { id: 'ma-1', type: 'Pieds', jp: 'Mae geri, Mawashi geri, Yoko geri', fr: 'Les 3 coups de pied (avant, circulaire, latéral).' },
+                    { id: 'ma-2', type: 'Enchaînement', jp: 'Yoko geri - jodan uraken uchi', fr: 'Coup de pied latéral suivi d’un revers du poing haut.' },
+                    { id: 'ma-3', type: 'Kata', jp: 'Naihanchi sandan (Complet)', fr: 'Kata Naihanchi sandan complet.' },
+                    { id: 'ma-4', type: 'Bunkaï', jp: '2 Bunkaïs du Naihanchi sandan', fr: '2 applications du kata Naihanchi sandan.' },
+                    { id: 'ma-5', type: 'Kata', jp: 'Pinan godan (Complet)', fr: 'Kata Pinan godan complet.' },
+                    { id: 'ma-6', type: 'Bunkaï', jp: '2 Bunkaïs du Pinan godan', fr: '2 applications du kata Pinan godan.' },
+                    { id: 'ma-7', type: 'Kata Supérieur', jp: 'Kusanku sho', fr: 'Kata Kusanku sho à savoir faire.' },
+                    { id: 'ma-8', type: 'Engagement', jp: '3 stages de karaté', fr: 'Participation à 3 stages de karaté.' }
+                ]
+            },
+            {
+                id: 'noire',
+                shortName: 'Ceinture Noire',
+                title: 'Ceinture Noire — 1er Dan (Shodan)',
+                kyu: '1er Dan',
+                category: 'Tous publics',
+                minAge: 'Examen Dan',
+                pdfFileName: null,
+                unavailableNote: 'Fiche PDF officielle non fournie pour ce grade.',
+                beltStyle: { type: 'solid', c1: '#0F172A', stripe: '#D97706', badgeBg: 'bg-slate-900 text-amber-300 border-amber-500/50', accent: '#DC2626' },
+                katas: ['naihanchi_shodan_full', 'pinan_shodan_full', 'kusanku_sho'],
+                objectives: [
+                    { id: 'n-1', type: 'Kata', jp: 'Naihanchi shodan', fr: 'Kata Naihanchi shodan complet.' },
+                    { id: 'n-2', type: 'Bunkaï', jp: '3 Bunkaïs Naihanchi shodan', fr: '3 applications martiales du kata Naihanchi shodan.' },
+                    { id: 'n-3', type: 'Kata', jp: 'Pinan shodan', fr: 'Kata Pinan shodan complet.' },
+                    { id: 'n-4', type: 'Bunkaï', jp: '3 Bunkaïs Pinan shodan', fr: '3 applications martiales du kata Pinan shodan.' },
+                    { id: 'n-5', type: 'Kata Supérieur', jp: 'Kusanku sho', fr: 'Kata Kusanku sho complet.' }
+                ]
+            }
+        ];
+
+        // =========================================================================
+        // 2. OFFICIAL KATA SHEETS METADATA
+        // =========================================================================
+        const KATA_SHEETS = {
+            naihanchi_shodan_7: {
+                tabLabel: 'Naihanchi Shodan (1–7)',
+                title: 'Planche PDF : Naihanchi Shodan (1 à 7)',
+                pdfFile: '1B 1 barrette.pdf',
+                movementsRange: 'Mouvements 1 à 7 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            naihanchi_shodan_12: {
+                tabLabel: 'Naihanchi Shodan (1–12)',
+                title: 'Planche PDF : Naihanchi Shodan (1 à 12)',
+                pdfFile: '1BJ.pdf',
+                movementsRange: 'Mouvements 1 à 12 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            naihanchi_shodan_20: {
+                tabLabel: 'Naihanchi Shodan (1–20)',
+                title: 'Planche PDF : Naihanchi Shodan (1 à 20)',
+                pdfFile: '2J.pdf / 3 jaune 1 barrette.pdf / 3j o.pdf',
+                movementsRange: 'Mouvements 1 à 20 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            naihanchi_shodan_full: {
+                tabLabel: 'Naihanchi Shodan (Complet)',
+                title: 'Planche PDF : Naihanchi Shodan (1 à 32)',
+                pdfFile: '5o v.pdf / 6v.pdf',
+                movementsRange: 'Planche complète Naihanchi Shodan (1 à 32)'
+            },
+            pinan_nidan_9: {
+                tabLabel: 'Pinan Nidan (1–9)',
+                title: 'Planche PDF : Pinan Nidan (1 à 9)',
+                pdfFile: '3j o.pdf',
+                movementsRange: 'Mouvements 1 à 9 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            pinan_nidan_full: {
+                tabLabel: 'Pinan Nidan (Complet)',
+                title: 'Planche PDF : Pinan Nidan (1 à 21)',
+                pdfFile: '4o.pdf',
+                movementsRange: 'Planche complète Pinan Nidan (1 à 21)'
+            },
+            pinan_shodan_12: {
+                tabLabel: 'Pinan Shodan (1–12)',
+                title: 'Planche PDF : Pinan Shodan (1 à 12)',
+                pdfFile: '5 orange 1 barrette.pdf / 5o v.pdf',
+                movementsRange: 'Mouvements 1 à 12 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            pinan_shodan_full: {
+                tabLabel: 'Pinan Shodan (Complet)',
+                title: 'Planche PDF : Pinan Shodan (1 à 21)',
+                pdfFile: '6v.pdf / 7v1.pdf',
+                movementsRange: 'Planche complète Pinan Shodan (1 à 21)'
+            },
+            pinan_sandan_8: {
+                tabLabel: 'Pinan Sandan (1–8)',
+                title: 'Planche PDF : Pinan Sandan (1 à 8)',
+                pdfFile: '7v1.pdf',
+                movementsRange: 'Mouvements 1 à 8 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            pinan_sandan_full: {
+                tabLabel: 'Pinan Sandan (Complet)',
+                title: 'Planche PDF : Pinan Sandan (1 à 16)',
+                pdfFile: '8v b.pdf / 9v b1.pdf',
+                movementsRange: 'Planche complète Pinan Sandan (1 à 16)'
+            },
+            pinan_yondan_9: {
+                tabLabel: 'Pinan Yondan (1–9)',
+                title: 'Planche PDF : Pinan Yondan (1 à 9)',
+                pdfFile: '9v b1.pdf',
+                movementsRange: 'Mouvements 1 à 9 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            pinan_yondan_full: {
+                tabLabel: 'Pinan Yondan (Complet)',
+                title: 'Planche PDF : Pinan Yondan (1 à 19)',
+                pdfFile: '10 bl.pdf / 11 bl1.pdf',
+                movementsRange: 'Planche complète Pinan Yondan (1 à 19)'
+            },
+            pinan_godan_11: {
+                tabLabel: 'Pinan Godan (1–11)',
+                title: 'Planche PDF : Pinan Godan (1 à 11)',
+                pdfFile: '12 bl2.pdf',
+                movementsRange: 'Mouvements 1 à 11 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            pinan_godan_full: {
+                tabLabel: 'Pinan Godan (Complet)',
+                title: 'Planche PDF : Pinan Godan (1 à 20)',
+                pdfFile: '13 b m.pdf / 14 m1.pdf',
+                movementsRange: 'Planche complète Pinan Godan (1 à 20)'
+            },
+            naihanchi_sandan_12: {
+                tabLabel: 'Naihanchi Sandan (1–12)',
+                title: 'Planche PDF : Naihanchi Sandan (1 à 12)',
+                pdfFile: '14 m1.pdf',
+                movementsRange: 'Mouvements 1 à 12 (arrêt au repère ■ sur la fiche PDF)'
+            },
+            naihanchi_sandan_full: {
+                tabLabel: 'Naihanchi Sandan (Complet)',
+                title: 'Planche PDF : Naihanchi Sandan (1 à 28)',
+                pdfFile: '15 m 2 dos.jpg',
+                movementsRange: 'Planche complète Naihanchi Sandan (1 à 28)'
+            },
+            kusanku_sho: {
+                tabLabel: 'Kusanku Sho',
+                title: 'Kata Supérieur : Kusanku Sho',
+                pdfFile: 'Programme Marron 2 / Adultes / Ceinture Noire',
+                movementsRange: 'Kata Kusanku Sho (Ordre Katas Supérieurs n°3)'
+            }
+        };
+
+        // =========================================================================
+        // 3. STATE MANAGEMENT & STATUS LEVELS
+        // =========================================================================
+        const STATUS_LEVELS = [
+            { label: 'À apprendre', icon: 'circle', classes: 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200' },
+            { label: 'À entraîner', icon: 'flame', classes: 'bg-amber-50 text-amber-800 border-amber-300 hover:bg-amber-100' },
+            { label: 'À répéter', icon: 'repeat', classes: 'bg-sky-50 text-sky-800 border-sky-300 hover:bg-sky-100' },
+            { label: 'Acquis', icon: 'check-circle-2', classes: 'bg-emerald-600 text-white border-emerald-600 hover:bg-emerald-700 shadow-sm' }
+        ];
+
+        let currentGradeIndex = 0;
+        let selectedKataTabIndex = 0;
+        let objectiveProgress = {};
+
+        try {
+            const saved = localStorage.getItem('okinawa_karate_progress_v1');
+            if (saved) objectiveProgress = JSON.parse(saved);
+        } catch (e) {
+            objectiveProgress = {};
+        }
+
+        function saveProgress() {
+            try {
+                localStorage.setItem('okinawa_karate_progress_v1', JSON.stringify(objectiveProgress));
+            } catch (e) {
+                // Ignore storage quota / sandbox restrictions
+            }
+        }
+
+        // =========================================================================
+        // 4. RENDER BELT VISUAL SVG
+        // =========================================================================
+        function renderBeltGraphic(style, sizeClass = 'w-20 h-6') {
+            const isSplit = style.type === 'split';
+            const c1 = style.c1 || '#FFFFFF';
+            const c2 = style.c2 || c1;
+            const stripe = style.stripe || null;
+            const stripe2 = style.stripe2 || null;
+
+            return `
+                <div class="${sizeClass} rounded-md border border-slate-400/50 overflow-hidden relative flex shadow-inner shrink-0" style="background-color: ${c1};">
+                    ${isSplit ? `<div class="w-1/2 h-full" style="background-color: ${c2};"></div>` : ''}
+                    ${stripe ? `<div class="absolute right-2.5 top-0 bottom-0 w-1.5" style="background-color: ${stripe};"></div>` : ''}
+                    ${stripe2 ? `<div class="absolute right-5 top-0 bottom-0 w-1.5" style="background-color: ${stripe2};"></div>` : ''}
+                </div>
+            `;
+        }
+
+        // =========================================================================
+        // 5. RENDER BELT SELECTOR RIBBON
+        // =========================================================================
+        function renderBeltSelector() {
+            const container = document.getElementById('belt-selector');
+            const counter = document.getElementById('belt-counter-label');
+            if (!container) return;
+
+            counter.textContent = `${currentGradeIndex + 1} / ${GRADES_DATA.length}`;
+
+            container.innerHTML = GRADES_DATA.map((g, idx) => {
+                const isActive = idx === currentGradeIndex;
+                const btnClasses = isActive
+                    ? 'bg-white text-slate-900 ring-2 ring-red-500 shadow-md scale-[1.02]'
+                    : 'bg-slate-800/90 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/80';
+
+                return `
+                    <button type="button" id="belt-pill-${idx}" onclick="selectGrade(${idx})"
+                        class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all shrink-0 ${btnClasses}">
+                        ${renderBeltGraphic(g.beltStyle, 'w-7 h-3')}
+                        <span>${g.shortName}</span>
+                    </button>
+                `;
+            }).join('');
+
+            const activePill = document.getElementById(`belt-pill-${currentGradeIndex}`);
+            if (activePill) {
+                activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+
+        // =========================================================================
+        // 6. RENDER GRADE HERO, OBJECTIVES & OFFICIAL PDF CARD
+        // =========================================================================
+        function renderGrade() {
+            const grade = GRADES_DATA[currentGradeIndex];
+            if (!grade) return;
+
+            // 1. Hero Banner
+            const hero = document.getElementById('grade-hero');
+            hero.className = 'rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/90 bg-white transition-all duration-300 relative overflow-hidden animate-grade-in';
+            hero.innerHTML = `
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="space-y-2.5">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${grade.beltStyle.badgeBg}">
+                                ${grade.kyu}
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                                ${grade.category}
+                            </span>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1">
+                                <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Âge min. : ${grade.minAge}
+                            </span>
+                        </div>
+                        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">${grade.title}</h2>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium">
+                            Programme officiel — Karate Club Okinawa (Swiss Shubukan Dojo)
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start md:items-end gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 shrink-0">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Ceinture visée</span>
+                        ${renderBeltGraphic(grade.beltStyle, 'w-32 h-8 belt-shadow')}
+                    </div>
+                </div>
+            `;
+
+            // 2. Objectives Checklist
+            const objContainer = document.getElementById('objectives-container');
+            objContainer.innerHTML = grade.objectives.map((obj, idx) => {
+                const statusIdx = objectiveProgress[obj.id] || 0;
+                const status = STATUS_LEVELS[statusIdx];
+                const isDone = statusIdx === 3;
+
+                return `
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${isDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/90 hover:border-slate-300 shadow-sm'}">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                                    ${idx + 1}. ${obj.type}
+                                </span>
+                            </div>
+                            <h4 class="text-base sm:text-lg font-extrabold text-slate-900 ${isDone ? 'line-through decoration-emerald-500/60 text-slate-500' : ''}">
+                                ${obj.jp}
+                            </h4>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${obj.fr}</p>
+                        </div>
+
+                        <button type="button" onclick="cycleObjectiveStatus('${obj.id}')"
+                            class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-extrabold transition-all shrink-0 active:scale-95 ${status.classes}">
+                            <i data-lucide="${status.icon}" class="w-4 h-4"></i>
+                            <span>${status.label}</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+
+            // 3. Official PDF Kata Sheet Reference (No custom drawings or comments)
+            const visualCard = document.getElementById('visual-studio-card');
+            const hasOfficialPdf = Boolean(grade.pdfFileName);
+
+            const downloadSectionHtml = hasOfficialPdf
+                ? `
+                    <button type="button" onclick="downloadOfficialGradePdf(${currentGradeIndex})"
+                        class="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95">
+                        <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
+                        <span>Télécharger le PDF officiel (${grade.pdfFileName})</span>
+                    </button>
+                `
+                : `
+                    <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium flex items-start gap-2">
+                        <i data-lucide="file-x" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
+                        <span>${grade.unavailableNote || 'Fiche PDF officielle non fournie pour ce grade.'}</span>
+                    </div>
+                `;
+
+            visualCard.innerHTML = `
+                <div class="p-5 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
+                        Document PDF Officiel
+                    </span>
+                    ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Disponible</span>` : ''}
+                </div>
+                <div class="p-5 sm:p-6">
+                    ${downloadSectionHtml}
+                </div>
+            `;
+
+            updateProgressBar();
+            lucide.createIcons();
+        }
+
+        // =========================================================================
+        // 7. OFFICIAL PDF DOWNLOAD & PURE-JS BINARY PDF GENERATOR FALLBACK
+        // =========================================================================
+        function sanitizePdfText(str) {
+            return String(str || '')
+                .replace(/é|è|ê|ë/g, 'e')
+                .replace(/É|È|Ê|Ë/g, 'E')
+                .replace(/à|â|ä/g, 'a')
+                .replace(/À|Â|Ä/g, 'A')
+                .replace(/î|ï/g, 'i')
+                .replace(/Î|Ï/g, 'I')
+                .replace(/ô|ö/g, 'o')
+                .replace(/Ô|Ö/g, 'O')
+                .replace(/ù|û|ü/g, 'u')
+                .replace(/Ù|Û|Ü/g, 'U')
+                .replace(/ç/g, 'c')
+                .replace(/Ç/g, 'C')
+                .replace(/[’‘]/g, "'")
+                .replace(/[«»“”]/g, '"')
+                .replace(/[—–]/g, '-')
+                .replace(/[^\x20-\x7E]/g, ' ')
+                .replace(/\\/g, '\\\\')
+                .replace(/\(/g, '\\(')
+                .replace(/\)/g, '\\)');
+        }
+
+        function wrapPdfLine(text, maxChars) {
+            const words = String(text || '').split(/\s+/);
+            const lines = [];
+            let current = '';
+            for (const w of words) {
+                if (!w) continue;
+                if ((current + (current ? ' ' : '') + w).length <= maxChars) {
+                    current += (current ? ' ' : '') + w;
+                } else {
+                    if (current) lines.push(current);
+                    current = w;
+                }
+            }
+            if (current) lines.push(current);
+            return lines.length ? lines : [''];
+        }
+
+        function buildOfficialGradePdfBlob(grade) {
+            const ops = [];
+            const addText = (x, y, size, font, text) => {
+                ops.push(`BT /${font} ${size} Tf ${x} ${y} Td (${sanitizePdfText(text)}) Tj ET`);
+            };
+            const addLine = (x1, y1, x2, y2, width = 0.8) => {
+                ops.push(`${width} w ${x1} ${y1} m ${x2} ${y2} l S`);
+            };
+            const addRect = (x, y, w, h, fill = false) => {
+                ops.push(`${x} ${y} ${w} ${h} re ${fill ? 'B' : 'S'}`);
+            };
+
+            // Header Block (matching official club sheet layout)
+            addText(45, 795, 11, 'F2', 'KARATE CLUB OKINAWA - SWISS SHUBUKAN DOJO');
+            addText(45, 770, 20, 'F2', 'Programme de Passage de grade');
+            addText(45, 750, 13, 'F1', `${grade.kyu} - ${grade.title} (${grade.category})`);
+            addLine(45, 738, 550, 738, 1.5);
+
+            // Table Header
+            const tableTop = 700;
+            const col1X = 45;
+            const col2X = 215;
+            const col3X = 445;
+            const col4X = 480;
+            const col5X = 515;
+            const tableRight = 550;
+
+            addText(col1X + 4, tableTop + 8, 8, 'F2', 'NOM DE LA TECHNIQUE');
+            addText(col2X + 4, tableTop + 8, 8, 'F2', 'DESCRIPTION / DETAILS');
+            addText(col3X + 4, tableTop + 8, 7, 'F2', 'Apprendre');
+            addText(col4X + 4, tableTop + 8, 7, 'F2', 'Entrainer');
+            addText(col5X + 4, tableTop + 8, 7, 'F2', 'Repeter');
+
+            const rows = [
+                { jp: '', fr: `Avoir ${grade.minAge} au minimum` },
+                ...grade.objectives.map(o => ({ jp: `- ${o.jp}`, fr: `- ${o.fr}` }))
+            ];
+
+            let currentY = tableTop;
+            for (const row of rows) {
+                const jpLines = wrapPdfLine(row.jp, 28);
+                const frLines = wrapPdfLine(row.fr, 40);
+                const lineCount = Math.max(jpLines.length, frLines.length, 1);
+                const rowHeight = Math.max(26, lineCount * 13 + 12);
+                const nextY = currentY - rowHeight;
+
+                addRect(col1X, nextY, tableRight - col1X, rowHeight, false);
+                addLine(col2X, currentY, col2X, nextY, 0.6);
+                addLine(col3X, currentY, col3X, nextY, 0.6);
+                addLine(col4X, currentY, col4X, nextY, 0.6);
+                addLine(col5X, currentY, col5X, nextY, 0.6);
+
+                jpLines.forEach((l, i) => addText(col1X + 6, currentY - 15 - i * 13, 9, 'F2', l));
+                frLines.forEach((l, i) => addText(col2X + 6, currentY - 15 - i * 13, 9, 'F1', l));
+
+                currentY = nextY;
+            }
+
+            // Kata sheet reference block
+            const gradeKatas = grade.katas || [];
+            if (gradeKatas.length > 0 && currentY > 150) {
+                currentY -= 24;
+                addText(45, currentY, 11, 'F2', 'Planches Katas associees (Verso de la fiche officielle) :');
+                currentY -= 16;
+                for (const kKey of gradeKatas) {
+                    const kInfo = KATA_SHEETS[kKey];
+                    if (kInfo && currentY > 95) {
+                        addText(52, currentY, 9.5, 'F1', `* ${kInfo.title} - ${kInfo.movementsRange}`);
+                        currentY -= 14;
+                    }
+                }
+            }
+
+            // Footer notice (from official PDFs)
+            addText(320, 62, 7.5, 'F2', 'Mettre une croix lorsque la technique est acquise');
+            addText(130, 38, 11, 'F2', "Merci de prendre votre licence pour l'examen !");
+
+            const stream = ops.join('\n');
+            const objects = [
+                '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
+                '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
+                '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >> endobj',
+                `4 0 obj << /Length ${stream.length} >> stream\n${stream}\nendstream endobj`,
+                '5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
+                '6 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj'
+            ];
+
+            let pdf = '%PDF-1.4\n';
+            const offsets = [0];
+            for (const obj of objects) {
+                offsets.push(pdf.length);
+                pdf += obj + '\n';
+            }
+            const xrefPos = pdf.length;
+            pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+            for (let i = 1; i <= objects.length; i++) {
+                pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
+            }
+            // 3. Official PDF Kata Sheet Reference (Direct GitHub Pages link inside ./pdf/)
+            const visualCard = document.getElementById('visual-studio-card');
+            const hasOfficialPdf = Boolean(grade.pdfFileName);
+            const encodedPdfHref = hasOfficialPdf ? `./pdf/${encodeURIComponent(grade.pdfFileName)}` : '#';
+
+            const downloadSectionHtml = hasOfficialPdf
+                ? `
+                    <a href="${encodedPdfHref}" download="${grade.pdfFileName}" target="_blank" rel="noopener"
+                        class="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95">
+                        <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
+                        <span>Télécharger le PDF officiel (${grade.pdfFileName})</span>
+                    </a>
+                `
+                : `
+                    <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium flex items-start gap-2">
+                        <i data-lucide="file-x" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
+                        <span>${grade.unavailableNote || 'Fiche PDF officielle non fournie pour ce grade.'}</span>
+                    </div>
+                `;
+
+            visualCard.innerHTML = `
+                <div class="p-5 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
+                        Document PDF Officiel
+                    </span>
+                    ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Disponible</span>` : ''}
+                </div>
+                <div class="p-5 sm:p-6">
+                    ${downloadSectionHtml}
+                </div>
+            `;
+
+            updateProgressBar();
+            lucide.createIcons();
+        }
+
+        // =========================================================================
+        // 7. INTERACTIONS & NAVIGATION
+        // =========================================================================
+        function selectGrade(index) {
+            currentGradeIndex = index;
+            selectedKataTabIndex = 0;
+            renderBeltSelector();
+            renderGrade();
+        }
+
+        function selectKataTab(tabIdx) {
+            selectedKataTabIndex = tabIdx;
+            renderGrade();
+        }
+
+        function stepGrade(delta) {
+            const next = currentGradeIndex + delta;
+            if (next >= 0 && next < GRADES_DATA.length) {
+                selectGrade(next);
+            }
+        }
+
+        function cycleObjectiveStatus(objId) {
+            const current = objectiveProgress[objId] || 0;
+            objectiveProgress[objId] = (current + 1) % STATUS_LEVELS.length;
+            saveProgress();
+            renderGrade();
+        }
+
+        function updateProgressBar() {
+            const grade = GRADES_DATA[currentGradeIndex];
+            const total = grade.objectives.length;
+            const acquired = grade.objectives.filter(o => (objectiveProgress[o.id] || 0) === 3).length;
+            const pct = total > 0 ? Math.round((acquired / total) * 100) : 0;
+
+            document.getElementById('progress-text').textContent = `${acquired} / ${total} (${pct}%)`;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+        }
+
+        function switchMainView(viewName) {
+            ['grade', 'tree', 'dojo'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.toggle('hidden', v !== viewName);
+                const btn = document.getElementById(`nav-${v}`);
+                if (v === viewName) {
+                    btn.className = 'nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm';
+                } else {
+                    btn.className = 'nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+                }
+            });
+
+            document.getElementById('belt-strip-container').classList.toggle('hidden', viewName !== 'grade');
+            lucide.createIcons();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderBeltSelector();
+            renderGrade();
+        });
+    </script>
+</body>
+</html>
