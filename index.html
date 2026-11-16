@@ -936,6 +936,12 @@
                             <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1">
                                 <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Âge min. : ${grade.minAge}
                             </span>
+                            ${grade.pdfFileName ? `
+                            <a href="./pdf/${encodeURIComponent(grade.pdfFileName)}" download="${grade.pdfFileName}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 transition shadow-xs cursor-pointer" title="Télécharger la fiche officielle">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                                <span>PDF Officiel</span>
+                            </a>
+                            ` : ''}
                         </div>
                         <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">${grade.title}</h2>
                         <p class="text-xs sm:text-sm text-slate-500 font-medium">
@@ -979,208 +985,82 @@
                 `;
             }).join('');
 
-            // 3. Official PDF Kata Sheet Reference (No custom drawings or comments)
-            const visualCard = document.getElementById('visual-studio-card');
-            const hasOfficialPdf = Boolean(grade.pdfFileName);
-
-            const downloadSectionHtml = hasOfficialPdf
-                ? `
-                    <button type="button" onclick="downloadOfficialGradePdf(${currentGradeIndex})"
-                        class="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95">
-                        <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
-                        <span>Télécharger le PDF officiel (${grade.pdfFileName})</span>
-                    </button>
-                `
-                : `
-                    <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium flex items-start gap-2">
-                        <i data-lucide="file-x" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
-                        <span>${grade.unavailableNote || 'Fiche PDF officielle non fournie pour ce grade.'}</span>
-                    </div>
-                `;
-
-            visualCard.innerHTML = `
-                <div class="p-5 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
-                        Document PDF Officiel
-                    </span>
-                    ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Disponible</span>` : ''}
-                </div>
-                <div class="p-5 sm:p-6">
-                    ${downloadSectionHtml}
-                </div>
-            `;
-
-            updateProgressBar();
-            lucide.createIcons();
-        }
-
-        // =========================================================================
-        // 7. OFFICIAL PDF DOWNLOAD & PURE-JS BINARY PDF GENERATOR FALLBACK
-        // =========================================================================
-        function sanitizePdfText(str) {
-            return String(str || '')
-                .replace(/é|è|ê|ë/g, 'e')
-                .replace(/É|È|Ê|Ë/g, 'E')
-                .replace(/à|â|ä/g, 'a')
-                .replace(/À|Â|Ä/g, 'A')
-                .replace(/î|ï/g, 'i')
-                .replace(/Î|Ï/g, 'I')
-                .replace(/ô|ö/g, 'o')
-                .replace(/Ô|Ö/g, 'O')
-                .replace(/ù|û|ü/g, 'u')
-                .replace(/Ù|Û|Ü/g, 'U')
-                .replace(/ç/g, 'c')
-                .replace(/Ç/g, 'C')
-                .replace(/[’‘]/g, "'")
-                .replace(/[«»“”]/g, '"')
-                .replace(/[—–]/g, '-')
-                .replace(/[^\x20-\x7E]/g, ' ')
-                .replace(/\\/g, '\\\\')
-                .replace(/\(/g, '\\(')
-                .replace(/\)/g, '\\)');
-        }
-
-        function wrapPdfLine(text, maxChars) {
-            const words = String(text || '').split(/\s+/);
-            const lines = [];
-            let current = '';
-            for (const w of words) {
-                if (!w) continue;
-                if ((current + (current ? ' ' : '') + w).length <= maxChars) {
-                    current += (current ? ' ' : '') + w;
-                } else {
-                    if (current) lines.push(current);
-                    current = w;
-                }
-            }
-            if (current) lines.push(current);
-            return lines.length ? lines : [''];
-        }
-
-        function buildOfficialGradePdfBlob(grade) {
-            const ops = [];
-            const addText = (x, y, size, font, text) => {
-                ops.push(`BT /${font} ${size} Tf ${x} ${y} Td (${sanitizePdfText(text)}) Tj ET`);
-            };
-            const addLine = (x1, y1, x2, y2, width = 0.8) => {
-                ops.push(`${width} w ${x1} ${y1} m ${x2} ${y2} l S`);
-            };
-            const addRect = (x, y, w, h, fill = false) => {
-                ops.push(`${x} ${y} ${w} ${h} re ${fill ? 'B' : 'S'}`);
-            };
-
-            // Header Block (matching official club sheet layout)
-            addText(45, 795, 11, 'F2', 'KARATE CLUB OKINAWA - SWISS SHUBUKAN DOJO');
-            addText(45, 770, 20, 'F2', 'Programme de Passage de grade');
-            addText(45, 750, 13, 'F1', `${grade.kyu} - ${grade.title} (${grade.category})`);
-            addLine(45, 738, 550, 738, 1.5);
-
-            // Table Header
-            const tableTop = 700;
-            const col1X = 45;
-            const col2X = 215;
-            const col3X = 445;
-            const col4X = 480;
-            const col5X = 515;
-            const tableRight = 550;
-
-            addText(col1X + 4, tableTop + 8, 8, 'F2', 'NOM DE LA TECHNIQUE');
-            addText(col2X + 4, tableTop + 8, 8, 'F2', 'DESCRIPTION / DETAILS');
-            addText(col3X + 4, tableTop + 8, 7, 'F2', 'Apprendre');
-            addText(col4X + 4, tableTop + 8, 7, 'F2', 'Entrainer');
-            addText(col5X + 4, tableTop + 8, 7, 'F2', 'Repeter');
-
-            const rows = [
-                { jp: '', fr: `Avoir ${grade.minAge} au minimum` },
-                ...grade.objectives.map(o => ({ jp: `- ${o.jp}`, fr: `- ${o.fr}` }))
-            ];
-
-            let currentY = tableTop;
-            for (const row of rows) {
-                const jpLines = wrapPdfLine(row.jp, 28);
-                const frLines = wrapPdfLine(row.fr, 40);
-                const lineCount = Math.max(jpLines.length, frLines.length, 1);
-                const rowHeight = Math.max(26, lineCount * 13 + 12);
-                const nextY = currentY - rowHeight;
-
-                addRect(col1X, nextY, tableRight - col1X, rowHeight, false);
-                addLine(col2X, currentY, col2X, nextY, 0.6);
-                addLine(col3X, currentY, col3X, nextY, 0.6);
-                addLine(col4X, currentY, col4X, nextY, 0.6);
-                addLine(col5X, currentY, col5X, nextY, 0.6);
-
-                jpLines.forEach((l, i) => addText(col1X + 6, currentY - 15 - i * 13, 9, 'F2', l));
-                frLines.forEach((l, i) => addText(col2X + 6, currentY - 15 - i * 13, 9, 'F1', l));
-
-                currentY = nextY;
-            }
-
-            // Kata sheet reference block
-            const gradeKatas = grade.katas || [];
-            if (gradeKatas.length > 0 && currentY > 150) {
-                currentY -= 24;
-                addText(45, currentY, 11, 'F2', 'Planches Katas associees (Verso de la fiche officielle) :');
-                currentY -= 16;
-                for (const kKey of gradeKatas) {
-                    const kInfo = KATA_SHEETS[kKey];
-                    if (kInfo && currentY > 95) {
-                        addText(52, currentY, 9.5, 'F1', `* ${kInfo.title} - ${kInfo.movementsRange}`);
-                        currentY -= 14;
-                    }
-                }
-            }
-
-            // Footer notice (from official PDFs)
-            addText(320, 62, 7.5, 'F2', 'Mettre une croix lorsque la technique est acquise');
-            addText(130, 38, 11, 'F2', "Merci de prendre votre licence pour l'examen !");
-
-            const stream = ops.join('\n');
-            const objects = [
-                '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
-                '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
-                '3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >> endobj',
-                `4 0 obj << /Length ${stream.length} >> stream\n${stream}\nendstream endobj`,
-                '5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
-                '6 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >> endobj'
-            ];
-
-            let pdf = '%PDF-1.4\n';
-            const offsets = [0];
-            for (const obj of objects) {
-                offsets.push(pdf.length);
-                pdf += obj + '\n';
-            }
-            const xrefPos = pdf.length;
-            pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
-            for (let i = 1; i <= objects.length; i++) {
-                pdf += String(offsets[i]).padStart(10, '0') + ' 00000 n \n';
-            }
-            // 3. Official PDF Kata Sheet Reference (Direct GitHub Pages link inside ./pdf/)
+            // 3. Official PDF Kata Sheet Reference & Download Card
             const visualCard = document.getElementById('visual-studio-card');
             const hasOfficialPdf = Boolean(grade.pdfFileName);
             const encodedPdfHref = hasOfficialPdf ? `./pdf/${encodeURIComponent(grade.pdfFileName)}` : '#';
 
+            const gradeKatas = grade.katas || [];
+            const gradeKatasHtml = gradeKatas.length > 0
+                ? `
+                    <div class="pt-4 border-t border-slate-100 space-y-2.5">
+                        <span class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-red-600"></i>
+                            Katas au programme de ce grade
+                        </span>
+                        <div class="space-y-2">
+                            ${gradeKatas.map(kKey => {
+                                const kInfo = KATA_SHEETS[kKey];
+                                if (!kInfo) return '';
+                                return `
+                                    <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200/70 text-xs">
+                                        <p class="font-extrabold text-slate-900">${kInfo.title}</p>
+                                        <p class="text-slate-500 text-[11px] mt-0.5">${kInfo.movementsRange}</p>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `
+                : '';
+
             const downloadSectionHtml = hasOfficialPdf
                 ? `
-                    <a href="${encodedPdfHref}" download="${grade.pdfFileName}" target="_blank" rel="noopener"
-                        class="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95">
-                        <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
-                        <span>Télécharger le PDF officiel (${grade.pdfFileName})</span>
-                    </a>
+                    <div class="space-y-4">
+                        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                                <i data-lucide="file-text" class="w-5 h-5"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Fichier PDF officiel</p>
+                                <p class="text-xs sm:text-sm font-extrabold text-slate-800 truncate" title="${grade.pdfFileName}">${grade.pdfFileName}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2.5">
+                            <a href="${encodedPdfHref}" download="${grade.pdfFileName}" target="_blank" rel="noopener"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95 cursor-pointer">
+                                <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
+                                <span>Télécharger le PDF officiel</span>
+                            </a>
+                            <a href="${encodedPdfHref}" target="_blank" rel="noopener"
+                                class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all border border-slate-200/80 cursor-pointer">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 shrink-0 text-slate-500"></i>
+                                <span>Ouvrir dans le navigateur</span>
+                            </a>
+                        </div>
+
+                        ${gradeKatasHtml}
+                    </div>
                 `
                 : `
-                    <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium flex items-start gap-2">
-                        <i data-lucide="file-x" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
-                        <span>${grade.unavailableNote || 'Fiche PDF officielle non fournie pour ce grade.'}</span>
+                    <div class="space-y-4">
+                        <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-xs font-medium flex items-start gap-2">
+                            <i data-lucide="file-x" class="w-4 h-4 text-slate-400 shrink-0 mt-0.5"></i>
+                            <span>${grade.unavailableNote || 'Fiche PDF officielle non fournie pour ce grade.'}</span>
+                        </div>
+
+                        ${gradeKatasHtml}
                     </div>
                 `;
 
             visualCard.innerHTML = `
                 <div class="p-5 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
-                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1.5">
+                        <i data-lucide="file-check" class="w-3 h-3"></i>
                         Document PDF Officiel
                     </span>
-                    ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Disponible</span>` : ''}
+                    ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible</span>` : '<span class="text-[11px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">Non disponible</span>'}
                 </div>
                 <div class="p-5 sm:p-6">
                     ${downloadSectionHtml}
@@ -1192,7 +1072,24 @@
         }
 
         // =========================================================================
-        // 7. INTERACTIONS & NAVIGATION
+        // 7. DOWNLOAD HELPER FUNCTION
+        // =========================================================================
+        function downloadOfficialGradePdf(index) {
+            const targetIndex = index !== undefined ? index : currentGradeIndex;
+            const grade = GRADES_DATA[targetIndex];
+            if (!grade || !grade.pdfFileName) return;
+            const a = document.createElement('a');
+            a.href = `./pdf/${encodeURIComponent(grade.pdfFileName)}`;
+            a.download = grade.pdfFileName;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // =========================================================================
+        // 8. INTERACTIONS & NAVIGATION
         // =========================================================================
         function selectGrade(index) {
             currentGradeIndex = index;
