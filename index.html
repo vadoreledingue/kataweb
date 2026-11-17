@@ -36,41 +36,41 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-red-600 selection:text-white">
+<body class="bg-slate-50 text-slate-900 font-sans antialiased selection:bg-red-600 selection:text-white overflow-x-hidden">
 
     <!-- HEADER / NAVBAR -->
     <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 sm:h-20">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shrink-0">
-                        <svg viewBox="0 0 100 100" class="w-8 h-8 text-red-500 fill-current">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 sm:py-0 sm:h-20 gap-2 sm:gap-4">
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <div class="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-slate-900 text-white flex items-center justify-center shadow-md shrink-0">
+                        <svg viewBox="0 0 100 100" class="w-6 h-6 sm:w-8 sm:h-8 text-red-500 fill-current">
                             <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="4" opacity="0.35"/>
                             <path d="M50 16 C64 16, 72 28, 66 40 C60 50, 48 45, 48 35 C48 27, 54 22, 50 16 Z" />
                             <path d="M79 67 C72 79, 58 80, 50 69 C44 59, 54 51, 63 56 C70 60, 71 68, 79 67 Z" />
                             <path d="M21 67 C14 55, 20 42, 34 41 C46 40, 48 53, 39 58 C32 62, 25 60, 21 67 Z" />
                         </svg>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 leading-none">KARATE CLUB OKINAWA</h1>
-                            <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-md text-xs font-jp font-bold bg-red-50 text-red-700 border border-red-200">守武館 Shubukan</span>
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-1.5 sm:gap-2">
+                            <h1 class="font-extrabold text-sm sm:text-xl tracking-tight text-slate-900 leading-none truncate">KARATE CLUB OKINAWA</h1>
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] sm:text-xs font-jp font-bold bg-red-50 text-red-700 border border-red-200 shrink-0">守武館</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Programme Officiel des Passages de Grade</p>
+                        <p class="text-[11px] sm:text-sm text-slate-500 font-medium truncate mt-0.5">Programme Officiel des Passages de Grade</p>
                     </div>
                 </div>
 
-                <nav class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200/80">
-                    <button type="button" onclick="switchMainView('grade')" id="nav-grade" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm">
+                <nav class="flex items-center bg-slate-100 p-1 rounded-xl sm:rounded-2xl border border-slate-200/80 w-full sm:w-auto">
+                    <button type="button" onclick="switchMainView('grade')" id="nav-grade" class="nav-btn flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm">
                         <i data-lucide="award" class="w-4 h-4 text-red-600"></i>
                         <span class="hidden sm:inline">Objectifs de ceinture</span>
                         <span class="sm:hidden">Objectifs</span>
                     </button>
-                    <button type="button" onclick="switchMainView('tree')" id="nav-tree" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                    <button type="button" onclick="switchMainView('tree')" id="nav-tree" class="nav-btn flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
                         <i data-lucide="git-fork" class="w-4 h-4"></i>
                         <span>Katas</span>
                     </button>
-                    <button type="button" onclick="switchMainView('dojo')" id="nav-dojo" class="nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
+                    <button type="button" onclick="switchMainView('dojo')" id="nav-dojo" class="nav-btn flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900">
                         <i data-lucide="info" class="w-4 h-4"></i>
                         <span class="hidden sm:inline">Règles d'examen</span>
                         <span class="sm:hidden">Règles</span>
@@ -81,35 +81,35 @@
 
         <!-- INTERACTIVE BELT SELECTOR STRIP -->
         <div id="belt-strip-container" class="bg-slate-900 text-white border-t border-slate-800">
-            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2.5">
-                <div class="flex items-center justify-between mb-1.5 px-1">
-                    <span class="text-[11px] uppercase tracking-wider font-bold text-slate-400 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                        Choisis la ceinture à réviser (<span id="belt-counter-label">1 / 20</span>)
+            <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-2.5">
+                <div class="flex items-center justify-between mb-1.5 px-0.5">
+                    <span class="text-[10px] sm:text-[11px] uppercase tracking-wider font-bold text-slate-400 flex items-center gap-1.5 truncate">
+                        <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
+                        <span>Choisis la ceinture (<span id="belt-counter-label">1 / 20</span>)</span>
                     </span>
-                    <div class="flex items-center gap-1">
-                        <button type="button" onclick="stepGrade(-1)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Grade précédent">
+                    <div class="flex items-center gap-1 shrink-0">
+                        <button type="button" onclick="stepGrade(-1)" class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-300 transition" title="Grade précédent">
                             <i data-lucide="chevron-left" class="w-4 h-4"></i>
                         </button>
-                        <button type="button" onclick="stepGrade(1)" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition" title="Grade suivant">
+                        <button type="button" onclick="stepGrade(1)" class="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-300 transition" title="Grade suivant">
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
-                <div id="belt-selector" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5"></div>
+                <div id="belt-selector" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 pt-0.5" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;"></div>
             </div>
         </div>
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <main class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8">
 
         <!-- VIEW 1: GRADE DETAIL & REVISION DASHBOARD -->
-        <section id="view-grade" class="space-y-6">
-            <div id="grade-hero" class="rounded-3xl p-6 sm:p-8 shadow-lg border transition-all duration-300 relative overflow-hidden"></div>
+        <section id="view-grade" class="space-y-4 sm:space-y-6">
+            <div id="grade-hero" class="rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm border border-slate-200/90 bg-white transition-all duration-300 relative overflow-hidden"></div>
 
             <!-- Interactive Checklist Legend & Progress Bar -->
-            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-200/90 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="space-y-1">
                     <h3 class="font-bold text-slate-900 flex items-center gap-2 text-base sm:text-lg">
                         <i data-lucide="check-square" class="w-5 h-5 text-red-600"></i>
@@ -118,7 +118,7 @@
                     <p class="text-xs sm:text-sm text-slate-500">Clique sur le bouton de statut de chaque technique pour suivre ta progression : À apprendre &rarr; À entraîner &rarr; À répéter &rarr; Acquis.</p>
                 </div>
 
-                <div class="w-full md:w-72 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80">
+                <div class="w-full md:w-72 bg-slate-50 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-200/80">
                     <div class="flex justify-between items-center text-xs font-bold mb-1.5">
                         <span class="text-slate-600">Objectifs acquis</span>
                         <span id="progress-text" class="text-slate-900">0 / 0 (0%)</span>
@@ -130,136 +130,136 @@
             </div>
 
             <!-- 2-COLUMN LAYOUT: OBJECTIVES & OFFICIAL PDF KATA SHEETS -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
                 <div id="objectives-container" class="lg:col-span-7 space-y-3"></div>
                 <div class="lg:col-span-5 space-y-5 lg:sticky lg:top-40">
-                    <div id="visual-studio-card" class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden"></div>
+                    <div id="visual-studio-card" class="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden"></div>
                 </div>
             </div>
         </section>
 
         <!-- VIEW 2: PROGRESSION TREE (ONLY THE 3 KATA BRANCHES BOX) -->
         <section id="view-tree" class="hidden space-y-6">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-                <div class="mb-6">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 mb-3">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-200 shadow-sm">
+                <div class="mb-5 sm:mb-6">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 mb-2.5">
                         <i data-lucide="git-branch" class="w-3.5 h-3.5"></i> Swiss Shubukan Dojo
                     </span>
-                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Les 3 Branches des Katas</h2>
+                    <h2 class="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">Les 3 Branches des Katas</h2>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-stretch">
                     <!-- Branch 1: Naihanchi -->
-                    <div class="rounded-2xl bg-amber-50/70 border border-amber-200/90 p-5 flex flex-col justify-between">
+                    <div class="rounded-2xl bg-amber-50/70 border border-amber-200/90 p-3.5 sm:p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-3">
-                                <span class="font-extrabold text-amber-950 text-base">Branche Naihanchi</span>
+                                <span class="font-extrabold text-amber-950 text-sm sm:text-base">Branche Naihanchi</span>
                                 <span class="font-jp text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-lg">ナイハンチ</span>
                             </div>
                             <div class="space-y-2 text-xs font-semibold">
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi shodan (1 à 7)</span>
-                                    <span class="text-slate-600 font-bold">Blanc 1b</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi shodan (1 à 7)</span>
+                                    <span class="text-slate-600 font-bold text-[11px] sm:text-xs shrink-0">Blanc 1b</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi shodan (1 à 12)</span>
-                                    <span class="text-yellow-700 font-bold">Blanc / Jaune</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi shodan (1 à 12)</span>
+                                    <span class="text-yellow-700 font-bold text-[11px] sm:text-xs shrink-0">Blanc / Jaune</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi shodan (1 à 20)</span>
-                                    <span class="text-amber-700 font-bold">Jaune / 1b / J-O</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi shodan (1 à 20)</span>
+                                    <span class="text-amber-700 font-bold text-[11px] sm:text-xs shrink-0">Jaune / 1b / J-O</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi shodan (Complet)</span>
-                                    <span class="text-emerald-700 font-bold">O-V • Verte • Noire</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi shodan (Complet)</span>
+                                    <span class="text-emerald-700 font-bold text-[11px] sm:text-xs shrink-0">O-V • Verte • Noire</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-slate-100/90 px-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-600">
-                                    <span>Naihanchi nidan (Complet)</span>
-                                    <span class="text-[11px] font-bold text-slate-500">Hors programme / pas demandé</span>
+                                <div class="flex items-center justify-between gap-2 bg-slate-100/90 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-200 text-slate-600">
+                                    <span class="text-slate-700 text-[11px] sm:text-xs">Naihanchi nidan (Complet)</span>
+                                    <span class="text-[10px] sm:text-[11px] font-bold text-slate-500 shrink-0 text-right">Hors prog.</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi sandan (1 à 12)</span>
-                                    <span class="text-amber-900 font-bold">Marron 1</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi sandan (1 à 12)</span>
+                                    <span class="text-amber-900 font-bold text-[11px] sm:text-xs shrink-0">Marron 1</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-amber-200/70">
-                                    <span>Naihanchi sandan (Complet)</span>
-                                    <span class="text-amber-950 font-bold">Marron 2 • Adulte</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-amber-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">Naihanchi sandan (Complet)</span>
+                                    <span class="text-amber-950 font-bold text-[11px] sm:text-xs shrink-0">Marron 2 • Adulte</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Branch 2: Pinan -->
-                    <div class="rounded-2xl bg-sky-50/70 border border-sky-200/90 p-5 flex flex-col justify-between">
+                    <div class="rounded-2xl bg-sky-50/70 border border-sky-200/90 p-3.5 sm:p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-3">
-                                <span class="font-extrabold text-sky-950 text-base">Série des 5 Pinan</span>
+                                <span class="font-extrabold text-sky-950 text-sm sm:text-base">Série des 5 Pinan</span>
                                 <span class="font-jp text-xs font-bold text-sky-800 bg-sky-100 px-2.5 py-1 rounded-lg">平安</span>
                             </div>
                             <div class="space-y-2 text-xs font-semibold">
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
-                                    <span>1. Pinan nidan</span>
-                                    <span class="text-orange-600 font-bold">Jaune/Orange &rarr; Orange</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-sky-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">1. Pinan nidan</span>
+                                    <span class="text-orange-600 font-bold text-[11px] sm:text-xs shrink-0"><span class="hidden sm:inline">Jaune/Orange</span><span class="sm:hidden">J-O</span> &rarr; Orange</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
-                                    <span>2. Pinan shodan</span>
-                                    <span class="text-emerald-600 font-bold">Orange 1b &rarr; Verte 1 / Noire</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-sky-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">2. Pinan shodan</span>
+                                    <span class="text-emerald-600 font-bold text-[11px] sm:text-xs shrink-0"><span class="hidden sm:inline">Orange 1b</span><span class="sm:hidden">O 1b</span> &rarr; Verte 1 / Noire</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
-                                    <span>3. Pinan sandan</span>
-                                    <span class="text-teal-700 font-bold">Verte 1 &rarr; Verte/Bleue 1</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-sky-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">3. Pinan sandan</span>
+                                    <span class="text-teal-700 font-bold text-[11px] sm:text-xs shrink-0">Verte 1 &rarr; V/B 1</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
-                                    <span>4. Pinan yondan</span>
-                                    <span class="text-blue-600 font-bold">V/B 1 &rarr; Bleue 1</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-sky-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">4. Pinan yondan</span>
+                                    <span class="text-blue-600 font-bold text-[11px] sm:text-xs shrink-0">V/B 1 &rarr; Bleue 1</span>
                                 </div>
-                                <div class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-sky-200/70">
-                                    <span>5. Pinan godan</span>
-                                    <span class="text-indigo-700 font-bold">Bleue 2 &rarr; Marron 2 / Adulte</span>
+                                <div class="flex items-center justify-between gap-2 bg-white px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl border border-sky-200/70">
+                                    <span class="text-slate-800 text-[11px] sm:text-xs">5. Pinan godan</span>
+                                    <span class="text-indigo-700 font-bold text-[11px] sm:text-xs shrink-0">Bleue 2 &rarr; M2 / Adulte</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Branch 3: Ordre Katas Supérieurs Swiss Shubukan Dojo -->
-                    <div class="rounded-2xl bg-slate-900 text-white p-5 flex flex-col justify-between">
+                    <div class="rounded-2xl bg-slate-900 text-white p-3.5 sm:p-5 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-3">
-                                <span class="font-extrabold text-white text-base">Ordre Katas Supérieurs</span>
+                                <span class="font-extrabold text-white text-sm sm:text-base">Ordre Katas Supérieurs</span>
                                 <span class="font-jp text-xs font-bold text-red-400 bg-red-950/80 border border-red-800 px-2.5 py-1 rounded-lg">守武館</span>
                             </div>
-                            <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-3">Swiss Shubukan Dojo</p>
+                            <p class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-3">Swiss Shubukan Dojo</p>
                             <ol class="space-y-1.5 text-xs font-semibold">
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">1.</span> Ananku</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">1.</span> Ananku</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">2.</span> Rohai</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">2.</span> Rohai</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800 px-3 py-1.5 rounded-xl border border-amber-500/40">
-                                    <span class="text-amber-300 font-bold"><span class="text-red-400 font-black mr-2">3.</span> Kusanku Sho</span>
-                                    <span class="text-[10px] text-amber-200/80">M2 • Adulte • Noire</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800 px-3 py-1.5 rounded-xl border border-amber-500/40">
+                                    <span class="text-amber-300 font-bold text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">3.</span> Kusanku Sho</span>
+                                    <span class="text-[10px] text-amber-200/80 shrink-0 font-medium">M2 • Adulte • Noire</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">4.</span> Jion</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">4.</span> Jion</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">5.</span> Wankan</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">5.</span> Wankan</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">6.</span> Itosu no passai</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">6.</span> Itosu no passai</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">7.</span> Shuri Sanchin</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">7.</span> Shuri Sanchin</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">8.</span> Wanshu</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">8.</span> Wanshu</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">9.</span> Chinti</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">9.</span> Chinti</span>
                                 </li>
-                                <li class="flex items-center justify-between bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
-                                    <span><span class="text-red-400 font-black mr-2">10.</span> Anan</span>
+                                <li class="flex items-center justify-between gap-2 bg-slate-800/90 px-3 py-1.5 rounded-xl border border-slate-700/80">
+                                    <span class="text-[11px] sm:text-xs"><span class="text-red-400 font-black mr-2">10.</span> Anan</span>
                                 </li>
                             </ol>
                         </div>
@@ -270,30 +270,30 @@
 
         <!-- VIEW 3: DOJO RULES & EXAM GUIDE -->
         <section id="view-dojo" class="hidden space-y-6">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+            <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-200 shadow-sm">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-5 sm:pb-6 border-b border-slate-100">
                     <div>
                         <span class="text-xs font-bold uppercase tracking-wider text-red-600">Charte & Règlement du Club</span>
-                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Comprendre les Passages de Grade</h2>
+                        <h2 class="text-xl sm:text-3xl font-black text-slate-900 mt-1">Comprendre les Passages de Grade</h2>
                     </div>
-                    <div class="px-4 py-2.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-bold flex items-center gap-2">
-                        <i data-lucide="id-card" class="w-5 h-5 text-amber-600 shrink-0"></i>
+                    <div class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm font-bold flex items-center gap-2">
+                        <i data-lucide="id-card" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0"></i>
                         <span>Merci de prendre votre licence pour l'examen !</span>
                     </div>
                 </div>
 
-                <div class="my-6 p-6 rounded-2xl bg-slate-900 text-white relative overflow-hidden">
+                <div class="my-5 sm:my-6 p-4 sm:p-6 rounded-2xl bg-slate-900 text-white relative overflow-hidden">
                     <div class="relative z-10 max-w-2xl">
-                        <p class="font-jp text-red-400 text-sm font-bold mb-2">守武館 — L'École de la Vie</p>
-                        <blockquote class="text-lg sm:text-xl font-bold leading-relaxed">
+                        <p class="font-jp text-red-400 text-xs sm:text-sm font-bold mb-1.5 sm:mb-2">守武館 — L'École de la Vie</p>
+                        <blockquote class="text-base sm:text-xl font-bold leading-relaxed">
                             « Le Grade Kyu (niveau inférieur) ou le Dan (niveau supérieur) n'est pas une récompense, c'est la constatation d'un niveau dans la pratique. »
                         </blockquote>
                     </div>
-                    <span class="font-jp text-8xl font-black text-white/5 absolute -right-4 -bottom-6 select-none">空手道</span>
+                    <span class="font-jp text-6xl sm:text-8xl font-black text-white/5 absolute -right-2 sm:-right-4 -bottom-4 sm:-bottom-6 select-none pointer-events-none">空手道</span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
                         <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
                             <div class="w-6 h-2 bg-slate-800 rounded-sm"></div>
                         </div>
@@ -301,7 +301,7 @@
                         <p class="text-sm text-slate-600 mt-1"><strong>Niveau intermédiaire</strong> ajouté sur la ceinture actuelle pour valider une première étape de progression.</p>
                     </div>
 
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
                         <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
                             <div class="w-6 h-2 rounded-sm overflow-hidden flex">
                                 <span class="w-1/2 bg-yellow-400"></span>
@@ -315,7 +315,7 @@
                         <p class="text-sm text-slate-600 mt-1"><strong>Grade intermédiaire</strong> • Appartenance personnelle.</p>
                     </div>
 
-                    <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                    <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
                         <div class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-3 shadow-sm">
                             <div class="w-6 h-2 bg-emerald-600 rounded-sm"></div>
                         </div>
@@ -332,13 +332,13 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-8 border-t border-slate-200 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-        <div class="flex items-center gap-2">
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 mt-6 sm:mt-8 border-t border-slate-200 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500">
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 sm:gap-2">
             <span class="font-bold text-slate-700">Karate Club Okinawa — Swiss Shubukan Dojo (守武館)</span>
-            <span>•</span>
+            <span class="hidden sm:inline">•</span>
             <span>Support de révision élèves & parents</span>
         </div>
-        <div>
+        <div class="text-slate-400">
             <span>Merci de prendre votre licence pour l'examen !</span>
         </div>
     </footer>
@@ -909,7 +909,10 @@
 
             const activePill = document.getElementById(`belt-pill-${currentGradeIndex}`);
             if (activePill) {
-                activePill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                container.scrollTo({
+                    left: activePill.offsetLeft - (container.clientWidth / 2) + (activePill.clientWidth / 2),
+                    behavior: 'smooth'
+                });
             }
         }
 
@@ -922,35 +925,35 @@
 
             // 1. Hero Banner
             const hero = document.getElementById('grade-hero');
-            hero.className = 'rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/90 bg-white transition-all duration-300 relative overflow-hidden animate-grade-in';
+            hero.className = 'rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm border border-slate-200/90 bg-white transition-all duration-300 relative overflow-hidden animate-grade-in';
             hero.innerHTML = `
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="space-y-2.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${grade.beltStyle.badgeBg}">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+                    <div class="space-y-2 sm:space-y-2.5 min-w-0">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                            <span class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold border ${grade.beltStyle.badgeBg}">
                                 ${grade.kyu}
                             </span>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                            <span class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
                                 ${grade.category}
                             </span>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1">
+                            <span class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1">
                                 <i data-lucide="user-check" class="w-3.5 h-3.5"></i> Âge min. : ${grade.minAge}
                             </span>
                             ${grade.pdfFileName ? `
-                            <a href="./pdf/${encodeURIComponent(grade.pdfFileName)}" download="${grade.pdfFileName}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 transition shadow-xs cursor-pointer" title="Télécharger la fiche officielle">
+                            <a href="./pdf/${encodeURIComponent(grade.pdfFileName)}" download="${grade.pdfFileName}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 transition shadow-xs cursor-pointer" title="Télécharger la fiche officielle">
                                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                                 <span>PDF Officiel</span>
                             </a>
                             ` : ''}
                         </div>
-                        <h2 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">${grade.title}</h2>
+                        <h2 class="text-xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight">${grade.title}</h2>
                         <p class="text-xs sm:text-sm text-slate-500 font-medium">
                             Programme officiel — Karate Club Okinawa (Swiss Shubukan Dojo)
                         </p>
                     </div>
-                    <div class="flex flex-col items-start md:items-end gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-200/80 shrink-0">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Ceinture visée</span>
-                        ${renderBeltGraphic(grade.beltStyle, 'w-32 h-8 belt-shadow')}
+                    <div class="flex items-center justify-between md:flex-col md:items-end gap-2 bg-slate-50 p-3 sm:p-4 rounded-2xl border border-slate-200/80 shrink-0">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">Ceinture visée</span>
+                        ${renderBeltGraphic(grade.beltStyle, 'w-28 sm:w-32 h-7 sm:h-8 belt-shadow')}
                     </div>
                 </div>
             `;
@@ -963,10 +966,10 @@
                 const isDone = statusIdx === 3;
 
                 return `
-                    <div class="bg-white rounded-2xl p-4 sm:p-5 border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${isDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/90 hover:border-slate-300 shadow-sm'}">
-                        <div class="space-y-1">
+                    <div class="bg-white rounded-2xl p-4 sm:p-5 border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 ${isDone ? 'border-emerald-200 bg-emerald-50/20' : 'border-slate-200/90 hover:border-slate-300 shadow-sm'}">
+                        <div class="space-y-1 min-w-0">
                             <div class="flex items-center gap-2">
-                                <span class="text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                                <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
                                     ${idx + 1}. ${obj.type}
                                 </span>
                             </div>
@@ -977,7 +980,7 @@
                         </div>
 
                         <button type="button" onclick="cycleObjectiveStatus('${obj.id}')"
-                            class="inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-extrabold transition-all shrink-0 active:scale-95 ${status.classes}">
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border text-xs font-extrabold transition-all shrink-0 active:scale-95 ${status.classes}">
                             <i data-lucide="${status.icon}" class="w-4 h-4"></i>
                             <span>${status.label}</span>
                         </button>
@@ -1055,14 +1058,14 @@
                 `;
 
             visualCard.innerHTML = `
-                <div class="p-5 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
+                <div class="p-4 sm:p-6 bg-slate-50/70 border-b border-slate-200/80 flex items-center justify-between gap-2">
                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200 flex items-center gap-1.5">
                         <i data-lucide="file-check" class="w-3 h-3"></i>
                         Document PDF Officiel
                     </span>
                     ${hasOfficialPdf ? `<span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible</span>` : '<span class="text-[11px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full">Non disponible</span>'}
                 </div>
-                <div class="p-5 sm:p-6">
+                <div class="p-4 sm:p-6">
                     ${downloadSectionHtml}
                 </div>
             `;
@@ -1131,10 +1134,12 @@
             ['grade', 'tree', 'dojo'].forEach(v => {
                 document.getElementById(`view-${v}`).classList.toggle('hidden', v !== viewName);
                 const btn = document.getElementById(`nav-${v}`);
-                if (v === viewName) {
-                    btn.className = 'nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm';
-                } else {
-                    btn.className = 'nav-btn flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+                if (btn) {
+                    if (v === viewName) {
+                        btn.className = 'nav-btn flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-slate-900 shadow-sm';
+                    } else {
+                        btn.className = 'nav-btn flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all text-slate-600 hover:text-slate-900';
+                    }
                 }
             });
 
